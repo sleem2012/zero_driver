@@ -1,0 +1,113 @@
+{
+  "project_info": {
+    "project_number": "384007160117",
+    "project_id": "taxi-fddb5",
+    "storage_bucket": "taxi-fddb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384007160117:android:d2545f3ccd006c4a33cc7c",
+        "android_client_info": {
+          "package_name": "com.perfect.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384007160117-90dsj0f9fjj59j221d046g6pju5vrktp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.perfect.driver",
+            "certificate_hash": "1897b67a29e3dec83eb1b4fc7541e0c6b3483974"
+          }
+        },
+        {
+          "client_id": "384007160117-ovmmhlv3dpqv0gp8o5agreumo1mcre7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.perfect.driver",
+            "certificate_hash": "6b744c5ad5cc6fbe221b4f14f96addd0f9b1b0b5"
+          }
+        },
+        {
+          "client_id": "384007160117-kc34iuhuag5j4mdm97kutt1odfjm07jn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJenNoCn6B_Vh-u5AZ5kEvTrEim-MEado"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384007160117-kc34iuhuag5j4mdm97kutt1odfjm07jn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384007160117:android:43ac2b4696273dd133cc7c",
+        "android_client_info": {
+          "package_name": "com.perfect.rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384007160117-kc34iuhuag5j4mdm97kutt1odfjm07jn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJenNoCn6B_Vh-u5AZ5kEvTrEim-MEado"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384007160117-kc34iuhuag5j4mdm97kutt1odfjm07jn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384007160117:android:bcb902d36be503e333cc7c",
+        "android_client_info": {
+          "package_name": "com.zero_driver.perfect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384007160117-kc34iuhuag5j4mdm97kutt1odfjm07jn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJenNoCn6B_Vh-u5AZ5kEvTrEim-MEado"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384007160117-kc34iuhuag5j4mdm97kutt1odfjm07jn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
