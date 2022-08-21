@@ -16,6 +16,7 @@ class SizedMapWithRoutes extends StatefulWidget {
   final num latitudeStartPoint;
   final num longitudeEndPoint;
   final num latitudeEndPoint;
+
   const SizedMapWithRoutes({
     Key? key,
     required this.longitudeStartPoint,
@@ -36,6 +37,7 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
   Map<PolylineId, Polyline> polylines = {};
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
+
   // ByteData imageBytes = await rootBundle.load('assets/images/test.png');
 
   BitmapDescriptor? customIcon;
@@ -75,7 +77,13 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
-
+  // controller.animateCamera(CameraUpdate.newLatLngBounds(
+  //     LatLngBounds(
+  //         southwest: LatLng(widget.latitudeStartPoint.toDouble(),
+  //             widget.longitudeStartPoint.toDouble()),
+  //         northeast: LatLng(widget.latitudeEndPoint.toDouble(),
+  //             widget.longitudeEndPoint.toDouble())),
+  //     60));
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
@@ -99,11 +107,12 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
               widget.latitudeStartPoint.toDouble(),
               widget.longitudeStartPoint.toDouble(),
             ),
-            zoom: 20.47,
+            zoom: 20,
           ),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
             _getPolyline();
+
             // _listenLocation();
 
             // _setMapStyle();
@@ -147,7 +156,7 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
   }
 
   _addPolyLine() {
-    PolylineId id = PolylineId("poly");
+    PolylineId id = const PolylineId("poly");
     Polyline polyline = Polyline(
         polylineId: id,
         color: Colors.black,
@@ -164,6 +173,7 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
           widget.longitudeStartPoint.toDouble()),
       PointLatLng(widget.latitudeEndPoint.toDouble(),
           widget.longitudeEndPoint.toDouble()),
+
       travelMode: TravelMode.driving,
     );
     if (result.points.isNotEmpty) {
