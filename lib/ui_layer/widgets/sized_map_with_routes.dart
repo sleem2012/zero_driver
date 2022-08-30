@@ -5,7 +5,6 @@ import 'package:driver/ui_layer/helpers/reusable/reusables.dart';
 import 'package:driver/ui_layer/helpers/size_config/size_config.dart';
 import 'package:driver/ui_layer/widgets/map_with_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -31,14 +30,26 @@ class SizedMapWithRoutes extends StatefulWidget {
 
 class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
     with WidgetsBindingObserver {
-  final Location location = Location();
   Map<MarkerId, Marker> markers = {};
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   Map<PolylineId, Polyline> polylines = {};
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
+  List<LatLng> polylineCoordinates2 = [];
+  late LocationData myLocation;
 
-  // ByteData imageBytes = await rootBundle.load('assets/images/test.png');
+  Future<LatLng> getMyLocation() async {
+    Location location = Location();
+    final locationData = await location.getLocation();
+
+    return LatLng(locationData.latitude!, locationData.longitude!);
+  }
+
+  Future<PointLatLng> getMyPoint() async {
+    final locationData = await getMyLocation();
+
+    return PointLatLng(locationData.latitude, locationData.longitude);
+  }
 
   BitmapDescriptor? customIcon;
 
@@ -53,13 +64,27 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
         LatLng(widget.latitudeStartPoint.toDouble(),
             widget.longitudeStartPoint.toDouble()),
         "origin",
-        markerIcon);
+        BitmapDescriptor.defaultMarkerWithHue(10));
+  }
+
+  setMYMarkers() async {
+    final markerIcon = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(
+          size: Size(1, 1),
+        ),
+        'assets/images/car1.png');
+    _addMarker(
+      await getMyLocation(),
+      "location",
+      markerIcon,
+    );
+    setState(() {});
   }
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-
+    // getMyLocation2();
     /// origin marker
 
     /// destination marker
@@ -70,6 +95,8 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
         "destination",
         BitmapDescriptor.defaultMarkerWithHue(90));
     setMarkers();
+    setMYMarkers();
+
     super.initState();
   }
 
@@ -77,13 +104,7 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
-  // controller.animateCamera(CameraUpdate.newLatLngBounds(
-  //     LatLngBounds(
-  //         southwest: LatLng(widget.latitudeStartPoint.toDouble(),
-  //             widget.longitudeStartPoint.toDouble()),
-  //         northeast: LatLng(widget.latitudeEndPoint.toDouble(),
-  //             widget.longitudeEndPoint.toDouble())),
-  //     60));
+
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
@@ -99,7 +120,7 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
       children: [
         GoogleMap(
           mapType: MapType.normal,
-          myLocationEnabled: false,
+          myLocationEnabled: true,
           markers: Set<Marker>.of(markers.values),
           polylines: Set<Polyline>.of(polylines.values),
           initialCameraPosition: CameraPosition(
@@ -107,12 +128,31 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
               widget.latitudeStartPoint.toDouble(),
               widget.longitudeStartPoint.toDouble(),
             ),
-            zoom: 20,
           ),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
             _getPolyline();
-
+            _getPolyline2();
+            controller.animateCamera(
+              CameraUpdate.newLatLngBounds(
+                  LatLngBounds(
+                      southwest: LatLng(
+                        widget.latitudeStartPoint <= widget.latitudeEndPoint
+                            ? widget.latitudeStartPoint.toDouble()
+                            : widget.latitudeEndPoint.toDouble(),
+                        widget.longitudeStartPoint <= widget.longitudeEndPoint
+                            ? widget.longitudeStartPoint.toDouble()
+                            : widget.longitudeEndPoint.toDouble(),
+                      ),
+                      northeast: LatLng(
+                          widget.latitudeStartPoint <= widget.latitudeEndPoint
+                              ? widget.latitudeEndPoint.toDouble()
+                              : widget.latitudeStartPoint.toDouble(),
+                          widget.longitudeStartPoint <= widget.longitudeEndPoint
+                              ? widget.longitudeEndPoint.toDouble()
+                              : widget.longitudeStartPoint.toDouble())),
+                  60),
+            );
             // _listenLocation();
 
             // _setMapStyle();
@@ -165,6 +205,16 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
     polylines[id] = polyline;
     setState(() {});
   }
+  _addPolyLine2() {
+    PolylineId id = const PolylineId("poly2");
+    Polyline polyline = Polyline(
+        polylineId: id,
+        color: Colors.black,
+        points: polylineCoordinates2,
+        width: 2);
+    polylines[id] = polyline;
+    setState(() {});
+  }
 
   _getPolyline() async {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
@@ -173,7 +223,6 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
           widget.longitudeStartPoint.toDouble()),
       PointLatLng(widget.latitudeEndPoint.toDouble(),
           widget.longitudeEndPoint.toDouble()),
-
       travelMode: TravelMode.driving,
     );
     if (result.points.isNotEmpty) {
@@ -182,5 +231,21 @@ class _SizedMapWithRoutesState extends State<SizedMapWithRoutes>
       });
     }
     _addPolyLine();
+  }
+
+  _getPolyline2() async {
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      kGoogleApiKey,
+      await getMyPoint(),
+      PointLatLng(widget.latitudeStartPoint.toDouble(),
+          widget.longitudeStartPoint.toDouble()),
+      travelMode: TravelMode.driving,
+    );
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates2.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+    _addPolyLine2();
   }
 }

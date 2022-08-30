@@ -210,12 +210,12 @@ class _CurrentTripWidgetState extends State<CurrentTripWidget> {
                   onTap: () {
                     openMapsSheet(context,
                         startLong:
-                            double.parse(widget.tripInfo.longitudeStartPoint!),
+                            double.parse(widget.tripInfo.longitudeEndPoint!),
                         endLat: double.parse(widget.tripInfo.latitudeEndPoint!),
                         endLong:
                             double.parse(widget.tripInfo.longitudeEndPoint!),
                         startLat:
-                            double.parse(widget.tripInfo.latitudeStartPoint!));
+                            double.parse(widget.tripInfo.latitudeEndPoint!));
                   },
                   child: Container(
                     margin: padding8,

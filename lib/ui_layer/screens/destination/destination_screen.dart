@@ -54,6 +54,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
     // debugPrint("result = $result");
     // setState(() => _pickedLocation = result);
     AddressResult result = await showGoogleMapLocationPicker(
+
         pinWidget: const Icon(
           Icons.location_pin,
           color: Colors.red,

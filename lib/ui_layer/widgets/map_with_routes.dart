@@ -206,7 +206,7 @@ class _MapWithRoutesState extends State<MapWithRoutes>
                 double.parse(widget.tripInfo.latitudeStartPoint!),
                 double.parse(widget.tripInfo.longitudeStartPoint!),
               ),
-              zoom: 20.47,
+              zoom: 15,
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
@@ -306,7 +306,7 @@ openMapsSheet(context,
     required double endLat,
     required double endLong}) async {
   try {
-    final coords = launcher.Coords(endLat, endLong);
+    final coords = launcher.Coords(startLat, startLong);
     final availableMaps = await launcher.MapLauncher.installedMaps;
 
     showModalBottomSheet(
